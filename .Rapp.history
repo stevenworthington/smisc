@@ -1,0 +1,667 @@
+m <-LiblineaR(data = s, target = yTrain, type = bestType,#
+              cost = bestCost, bias = TRUE, verbose = FALSE)
+s2 <- scale(xTest, attr(s, "scaled:center"), attr(s, "scaled:scale"))
+pr <- FALSE #
+if (bestType==0 || bestType==7) { pr <- TRUE }
+p <- predict(m, s2, proba = pr, decisionValues = TRUE)
+res <- table(p$predictions, yTest) #
+print(res)
+BCR <- mean(c(res[1,1] / sum(res[,1]), res[2,2] / sum(res[,2]), res[3,3] / sum(res[,3]))) #
+print(BCR)
+ls()
+packinfo()
+update.packages(ask=F)
+packinfo()
+data(mtcars)
+mtcars
+fv <- c("vs", "gear", "am")#
+mtcars[, fv] <- lapply(mtcars[, fv], factor)#
+#
+library(lme4)#
+library(effects)
+m1 <- glmer(vs ~ gear * am + (1 | id), #
+    family = binomial(link = "logit"), #
+    data = mtcars)
+mtcars$id <- 1:nrow(mtcars)
+m1 <- glmer(vs ~ gear * am + (1 | id), #
+    family = binomial(link = "logit"), #
+    data = mtcars)
+summary(m1)
+?data
+data(orthodont, package = "nlme")
+library(nlme)
+data(orthodont, package = "nlme")
+data(Orthodont, package = "nlme")
+library(lme4)
+detach("nlme")
+?detach
+detach(package:nlme)
+Orthodont
+fv <- c("Sex", "age")#
+Orthodont[, fv] <- lapply(Orthodont[, fv], factor)
+m1 <- glmer(Sex ~ age * distance + (1 | Subject), #
+    family = binomial(link = "logit"), #
+    data = Orthodont)
+summary(m1)
+Orthodont[Orthodont$age == 8, ] <- 10#
+Orthodont[Orthodont$age == 14, ] <- 12
+data(Orthodont, package = "nlme")#
+#
+Orthodont[Orthodont$age == 8, ] <- 10#
+Orthodont[Orthodont$age == 14, ] <- 12
+detach(Orthodont)
+?detach
+data(Orthodont, package = "nlme")
+Orthodont[Orthodont$age == 8, ] <- 10#
+Orthodont[Orthodont$age == 14, ] <- 12
+Orthodont[Orthodont$age == 8, ]
+data(Orthodont, package = "nlme")
+str(Orthodont)
+options(stringsAsFactors = FALSE)
+data(Orthodont, package = "nlme")
+str(Orthodont)
+Orthodont[Orthodont$age == 8, ]
+Orthodont$age[Orthodont$age == 8, ] <- 10#
+Orthodont$age[Orthodont$age == 14, ] <- 12
+Orthodont$age[Orthodont$age == 8, ]
+Orthodont$age[Orthodont$age == 8]
+Orthodont$age[Orthodont$age == 8] <- 10#
+Orthodont$age[Orthodont$age == 14] <- 12
+Orthodont
+fv <- c("Sex", "age")#
+Orthodont[, fv] <- lapply(Orthodont[, fv], factor)
+str(Orthodont)
+library(lme4)#
+library(effects)
+m1 <- glmer(Sex ~ age * distance + (1 | Subject), #
+    family = binomial(link = "logit"), #
+    data = Orthodont)
+summary(m1)
+eff <- allEffects(m1)
+str(eff)
+m1 <- glmer(Sex ~ age + distance + age:distance + (1 | Subject), #
+    family = binomial(link = "logit"), #
+    data = Orthodont)#
+#
+summary(m1)
+eff <- allEffects(m1)
+str(eff)
+m1 <- glmer(Sex ~ age * distance + (1 | Subject), #
+    family = binomial(link = "logit"), #
+    data = Orthodont)#
+#
+summary(m1)#
+eff <- allEffects(m1)
+str(eff)
+e <- eff[["age:distance"]]
+e
+plot(eff)
+set.seed(1234)#
+Orthodont$new <- rnorm(nrow(Orthodont), 10, 4)
+m1 <- glmer(Sex ~ age * distance + new + (1 | Subject), #
+    family = binomial(link = "logit"), #
+    data = Orthodont)#
+#
+summary(m1)
+Orthodont$new <- rnorm(nrow(Orthodont), 10, 4)*1:nrow(Orthodont)
+m1 <- glmer(Sex ~ age * distance + new + (1 | Subject), #
+    family = binomial(link = "logit"), #
+    data = Orthodont)#
+#
+summary(m1)
+Orthodont$new <- rnorm(nrow(Orthodont), 10, 4)*(1:nrow(Orthodont)^2)
+(1:nrow(Orthodont)^2)
+1:nrow(Orthodont)
+Orthodont$new <- rnorm(nrow(Orthodont), 10, 4)*1:nrow(Orthodont)
+m1 <- glmer(Sex ~ age * distance + new + (1 | Subject), #
+    family = binomial(link = "logit"), #
+    data = Orthodont)#
+#
+summary(m1)
+set.seed(1234)#
+Orthodont$new <- rnorm(nrow(Orthodont), 10, 4)*1:nrow(Orthodont)
+m1 <- glmer(Sex ~ age * distance + new + (1 | Subject), #
+    family = binomial(link = "logit"), #
+    data = Orthodont)#
+#
+summary(m1)
+eff <- allEffects(m1)
+str(eff)
+e <- eff[["age:distance"]]#
+plot(eff)
+e
+summary(m1)
+Orthodont
+ndat <- expand.grid(#
+    age = levels(Orthodont$age),#
+    distance = seq(min(Orthodont$distance), max(Orthodont$distance), 0.5),#
+    new = Orthodont$new#
+    )
+ndat
+ndat <- expand.grid(#
+    age = levels(Orthodont$age),#
+    distance = Orthodont$distance,#
+    new = Orthodont$new#
+    )
+ndat
+?predict.mer
+methods("predict")
+?predict.merMod
+ndata <- expand.grid(#
+    age = levels(Orthodont$age),#
+    distance = Orthodont$distance,#
+    new = Orthodont$new#
+    )
+preds <- data.frame(#
+    pred = predict(m1, newdata = ndata, type = "response"),#
+    ndata)
+ndata <- expand.grid(#
+    age = levels(Orthodont$age),#
+    distance = Orthodont$distance,#
+    new = Orthodont$new,#
+    Subject = Orthodont$Subject#
+    )
+dim(ndata)
+preds <- data.frame(#
+    pred = predict(m1, newdata = ndata, type = "response"),#
+    ndata)
+head(preds, 200)
+library(plyr)
+nnn <- ddply(preds, .(age, distance), summarise, mpred = mean(pred))
+dim(nnn)
+nnn
+e
+ndata <- expand.grid(#
+    age = levels(Orthodont$age),#
+    distance = seq(18, 30, 2),#
+    new = Orthodont$new,#
+    Subject = Orthodont$Subject#
+    )
+dim(ndata)
+ndata <- expand.grid(#
+    age = levels(Orthodont$age),#
+    distance = seq(18, 30, 2),#
+    new = Orthodont$new,#
+    Subject = Orthodont$Subject#
+    )    #
+preds <- data.frame(#
+    pred = predict(m1, newdata = ndata, type = "response"),#
+    ndata)
+nnn <- ddply(preds, .(age, distance), summarise, mpred = mean(pred))
+nnn
+e
+?predict.merMod
+ndata <- expand.grid(#
+    age = levels(Orthodont$age),#
+    distance = seq(18, 30, 2),#
+    new = Orthodont$new#,#
+    #Subject = Orthodont$Subject#
+    )
+preds <- data.frame(#
+    pred = predict(m1, newdata = ndata, #
+        re.form = ~ 0, type = "response"),#
+    ndata)
+dim(preds)
+nnn <- ddply(preds, .(age, distance), summarise, mpred = mean(pred))
+nnn
+e
+library(effects)#
+library(mfx)#
+library(ggplot2)#
+#
+# data#
+data(mtcars)#
+carsdat <- mtcars#
+carsdat$carb <- ifelse(carsdat$carb %in% 1:3, 0, 1)#
+facvars <- c("vs", "am", "carb")#
+carsdat[, paste0(facvars, "f")] <- lapply(carsdat[, facvars], factor)#
+#
+# model#
+m1 <- glm(vsf ~ amf + carbf, #
+    family = binomial(link = "logit"), #
+    data = carsdat)#
+summary(m1)#
+######################################
+# effects package#
+eff <- allEffects(m1)#
+plot(eff, rescale.axis = FALSE)#
+eff_df <- data.frame(eff[["carbf"]])#
+eff_df
+?allEffects
+eff <- allEffects(m1, confidence.level = 0.95)
+eff <- allEffects(m1, confidence.level = 0.84)
+plot(eff, rescale.axis = FALSE)
+eff <- allEffects(m1, confidence.level = 0.90)
+plot(eff, rescale.axis = FALSE)
+data(mtcars)
+dflist <- list(mtcars, mtcars, mtcars)
+str(dflist)
+names(dflist) <- paste0("mtcars", 1:3)
+str(dflist)
+dflist[["mtcars1"]]$school <- "A"
+str(dflist)
+dflist["mtcars1"]$school <- "A"
+str(dflist)
+dflist[["mtcars2"]]$school <- "E"
+dflist[["mtcars3"]]$school <- "T"
+str(dflist)
+dat_all <- do.call(rbind.data.frame, dflist)
+str(dat_all)
+head(dat_all)
+library(psych)
+fa.parallel(#
+    x = all_dat[, 8:11], #
+    fm = "ml", #
+    fa = "fa")
+fa.parallel(#
+    x = dat_all[, 8:11], #
+    fm = "ml", #
+    fa = "fa")
+fa.parallel(#
+    x = dat_all[, 4:11], #
+    fm = "ml", #
+    fa = "fa")
+myfa <- fa(#
+    r = dat_all[, 4:11],#
+    nfactors = 2,#
+    rotate = "varimax", #
+    scores = "tenBerge",#
+    fm = "ml",#
+    oblique.scores = FALSE,#
+    use = "pairwise",#
+    cor = "cor"#
+    )
+str(myfa)
+myfa$scores
+a <- data.frame(dat_all, myfa$scores)
+str(a)
+a
+24*7
+168/20
+168/25
+library(psych)
+?fa
+dat <- data.frame(#
+    b_id = rep(paste0("BID", 1:5), each = 5),#
+    u_id = paste0("UID", 1:25)#
+    #date = #
+)
+dat
+?as.Date
+set.seed(02138)#
+#
+dat <- data.frame(#
+    b_id = rep(paste0("BID", 1:5), each = 5),#
+    u_id = paste0("UID", 1:25),#
+    date = sample(seq(as.Date("2000/1/1"), by = "quarter", length.out = 100), size = 25)#
+)
+dat
+dat <- data.frame(#
+    b_id = rep(paste0("BID", 1:5), each = 5),#
+    u_id = paste0("UID", 1:25),#
+    date = seq(as.Date("2000/1/1"), by = "quarter", length.out = 25)#
+)
+dat
+dat <- data.frame(#
+    b_id = rep(paste0("BID", 1:5), each = 6),#
+    u_id = paste0("UID", 1:30),#
+    date = seq(as.Date("2005/1/1"), by = "quarter", length.out = 30)#
+)
+dat
+str(dat)
+myfun <- function(d) {#
+	start <- d - 365#
+	end <- d + 365#
+	sum(d >= start && d <= end) #
+}
+library(plyr)
+temp <- ddply(dat, .(b_id), transform, count = myfun(date))
+temp
+temp <- ddply(dat, .(b_id, u_id), transform, count = myfun(date))
+temp
+set.seed(02138)#
+#
+dat <- data.frame(#
+    id = paste0("ID", 1:50),#
+    tooth = c(rnorm(25, 100, 4), rnorm(25, 90, 6))#
+    jaw = c(rnorm(25, 50, 3), rnorm(25, 60, 4)),#
+    impact = rep(c("yes", "no"), each = 25)#
+)
+set.seed(02138)#
+#
+dat <- data.frame(#
+    id = paste0("ID", 1:50),#
+    tooth = c(rnorm(25, 100, 4), rnorm(25, 90, 6)),#
+    jaw = c(rnorm(25, 50, 3), rnorm(25, 60, 4)),#
+    impact = rep(c("yes", "no"), each = 25)#
+)
+dat
+model1 <- lm(jaw ~ tooth, data = dat)
+summary(model1)
+set.seed(02138)#
+#
+dat <- data.frame(#
+    id = paste0("ID", 1:50),#
+    tooth = c(rnorm(25, 100, 4), rnorm(25, 90, 6)),#
+    jaw = c(rnorm(25, 50, 3), rnorm(25, 60, 4)),#
+    impact = factor(rep(c("yes", "no"), each = 25))#
+)
+model1 <- lm(jaw ~ tooth + impact, data = dat)#
+summary(model1)
+model1 <- lm(jaw ~ tooth * impact, data = dat)#
+summary(model1)
+residuals(model1)
+model1 <- lm(jaw ~ tooth, data = dat)#
+summary(model1)#
+residuals(model1)
+library(ggplot2)#
+ggplot(dat, aes(x = tooth, y = jaw, color = impact)) +#
+    geom_point() +#
+    geom_smooth(method = "lm") +#
+    theme_bw()
+ggplot(dat, aes(x = tooth, y = jaw, color = impact)) +#
+    geom_point() +#
+    geom_smooth(aes(group = 1), method = "lm") +#
+    theme_bw()
+set.seed(02138)#
+#
+dat <- data.frame(#
+    id = paste0("ID", 1:50),#
+    tooth = c(rnorm(25, 100, 4), rnorm(25, 95, 6)),#
+    jaw = c(rnorm(25, 50, 3), rnorm(25, 55, 4)),#
+    impact = factor(rep(c("yes", "no"), each = 25))#
+)
+ggplot(dat, aes(x = tooth, y = jaw, color = impact)) +#
+    geom_point() +#
+    geom_smooth(aes(group = 1), method = "lm") +#
+    theme_bw()
+dat <- data.frame(#
+    id = paste0("ID", 1:50),#
+    tooth = c(rnorm(25, 100, 4), rnorm(25, 102, 6)),#
+    jaw = c(rnorm(25, 50, 3), rnorm(25, 55, 4)),#
+    impact = factor(rep(c("yes", "no"), each = 25))#
+)#
+#
+# plot#
+library(ggplot2)#
+ggplot(dat, aes(x = tooth, y = jaw, color = impact)) +#
+    geom_point() +#
+    geom_smooth(aes(group = 1), method = "lm") +#
+    theme_bw()
+dat <- data.frame(#
+    id = paste0("ID", 1:50),#
+    tooth = c(rnorm(25, 100, 4), rnorm(25, 102, 6)),#
+    jaw = c(rnorm(25, 50, 3), rnorm(25, 58, 4)),#
+    impact = factor(rep(c("yes", "no"), each = 25))#
+)#
+#
+# plot#
+library(ggplot2)#
+ggplot(dat, aes(x = tooth, y = jaw, color = impact)) +#
+    geom_point() +#
+    geom_smooth(aes(group = 1), method = "lm") +#
+    theme_bw()
+dat <- data.frame(#
+    id = paste0("ID", 1:50),#
+    tooth = c(rnorm(25, 100, 4), rnorm(25, 103, 6)),#
+    jaw = c(rnorm(25, 50, 3), rnorm(25, 58, 4)),#
+    impact = factor(rep(c("yes", "no"), each = 25))#
+)#
+#
+# plot#
+library(ggplot2)#
+ggplot(dat, aes(x = tooth, y = jaw, color = impact)) +#
+    geom_point() +#
+    geom_smooth(aes(group = 1), method = "lm") +#
+    theme_bw()
+set.seed(02138)#
+#
+dat <- data.frame(#
+    id = paste0("ID", 1:50),#
+    tooth = c(rnorm(25, 100, 4), rnorm(25, 103, 6)),#
+    jaw = c(rnorm(25, 50, 3), rnorm(25, 58, 4)),#
+    impact = factor(rep(c("yes", "no"), each = 25))#
+)#
+#
+# plot#
+library(ggplot2)#
+ggplot(dat, aes(x = tooth, y = jaw, color = impact)) +#
+    geom_point() +#
+    geom_smooth(aes(group = 1), method = "lm") +#
+    theme_bw()
+set.seed(02138)#
+#
+dat <- data.frame(#
+    id = paste0("ID", 1:50),#
+    tooth = c(rnorm(25, 100, 4), rnorm(25, 102, 6)),#
+    jaw = c(rnorm(25, 50, 3), rnorm(25, 58, 4)),#
+    impact = factor(rep(c("yes", "no"), each = 25))#
+)#
+#
+# plot#
+library(ggplot2)#
+ggplot(dat, aes(x = tooth, y = jaw, color = impact)) +#
+    geom_point() +#
+    geom_smooth(aes(group = 1), method = "lm") +#
+    theme_bw()
+set.seed(02138)#
+#
+dat <- data.frame(#
+    id = paste0("ID", 1:50),#
+    tooth = c(rnorm(25, 100, 4), rnorm(25, 102, 6)),#
+    jaw = c(rnorm(25, 50, 3), rnorm(25, 58, 5)),#
+    impact = factor(rep(c("yes", "no"), each = 25))#
+)#
+#
+# plot#
+library(ggplot2)#
+ggplot(dat, aes(x = tooth, y = jaw, color = impact)) +#
+    geom_point() +#
+    geom_smooth(aes(group = 1), method = "lm") +#
+    theme_bw()
+set.seed(02138)#
+#
+dat <- data.frame(#
+    id = paste0("ID", 1:50),#
+    tooth = c(rnorm(25, 100, 4), rnorm(25, 102, 6)),#
+    jaw = c(rnorm(25, 50, 5), rnorm(25, 58, 4)),#
+    impact = factor(rep(c("yes", "no"), each = 25))#
+)#
+#
+# plot#
+library(ggplot2)#
+ggplot(dat, aes(x = tooth, y = jaw, color = impact)) +#
+    geom_point() +#
+    geom_smooth(aes(group = 1), method = "lm") +#
+    theme_bw()
+set.seed(02138)#
+#
+dat <- data.frame(#
+    id = paste0("ID", 1:50),#
+    tooth = c(rnorm(25, 100, 5), rnorm(25, 102, 6)),#
+    jaw = c(rnorm(25, 50, 4), rnorm(25, 58, 4)),#
+    impact = factor(rep(c("yes", "no"), each = 25))#
+)#
+#
+# plot#
+library(ggplot2)#
+ggplot(dat, aes(x = tooth, y = jaw, color = impact)) +#
+    geom_point() +#
+    geom_smooth(aes(group = 1), method = "lm") +#
+    theme_bw()
+set.seed(02138)#
+#
+dat <- data.frame(#
+    id = paste0("ID", 1:50),#
+    tooth = c(rnorm(25, 100, 5), rnorm(25, 103, 6)),#
+    jaw = c(rnorm(25, 50, 4), rnorm(25, 58, 4)),#
+    impact = factor(rep(c("yes", "no"), each = 25))#
+)#
+#
+# plot#
+library(ggplot2)#
+ggplot(dat, aes(x = tooth, y = jaw, color = impact)) +#
+    geom_point() +#
+    geom_smooth(aes(group = 1), method = "lm") +#
+    theme_bw()
+model1 <- lm(jaw ~ tooth, data = dat)#
+summary(model1)#
+residuals(model1)
+set.seed(02138)#
+#
+dat <- data.frame(#
+    id = paste0("ID", 1:50),#
+    tooth = c(rnorm(25, 100, 5), rnorm(25, 103, 6)),#
+    jaw = c(rnorm(25, 50, 2), rnorm(25, 58, 2)),#
+    impact = factor(rep(c("yes", "no"), each = 25))#
+)#
+#
+# plot#
+library(ggplot2)#
+ggplot(dat, aes(x = tooth, y = jaw, color = impact)) +#
+    geom_point() +#
+    geom_smooth(aes(group = 1), method = "lm") +#
+    theme_bw()
+set.seed(02138)#
+#
+dat <- data.frame(#
+    id = paste0("ID", 1:50),#
+    tooth = c(rnorm(25, 100, 2), rnorm(25, 103, 2)),#
+    jaw = c(rnorm(25, 50, 4), rnorm(25, 58, 4)),#
+    impact = factor(rep(c("yes", "no"), each = 25))#
+)#
+#
+# plot#
+library(ggplot2)#
+ggplot(dat, aes(x = tooth, y = jaw, color = impact)) +#
+    geom_point() +#
+    geom_smooth(aes(group = 1), method = "lm") +#
+    theme_bw()
+set.seed(02138)#
+#
+dat <- data.frame(#
+    id = paste0("ID", 1:50),#
+    tooth = c(rnorm(25, 100, 3), rnorm(25, 103, 4)),#
+    jaw = c(rnorm(25, 50, 4), rnorm(25, 58, 4)),#
+    impact = factor(rep(c("yes", "no"), each = 25))#
+)#
+#
+# plot#
+library(ggplot2)#
+ggplot(dat, aes(x = tooth, y = jaw, color = impact)) +#
+    geom_point() +#
+    geom_smooth(aes(group = 1), method = "lm") +#
+    theme_bw()
+model1 <- lm(jaw ~ tooth, data = dat)#
+summary(model1)#
+residuals(model1)
+levels(dat$impact)
+dat$res1 <- residuals(model1)
+model2 <- glm(impact ~ res1, #
+              family = binomial(link = "logit"), #
+              data = dat)
+summary(model2)
+exp(cbind(coef(model2), confint(model2)))
+dat$res1
+dat
+model3 <- glm(impact ~ jaw + tooth, #
+              family = binomial(link = "logit"), #
+              data = dat)#
+summary(model3)#
+#
+exp(cbind(coef(model3), confint(model3)))
+set.seed(02138)#
+#
+dat <- data.frame(#
+    id = paste0("ID", 1:50),#
+    tooth = c(rnorm(25, 100, 3), rnorm(25, 103, 4)),#
+    jaw = c(rnorm(25, 50, 4), rnorm(25, 58, 4)),#
+    impact = factor(#
+        c(sample(c("yes", "no"), replace = TRUE, size = 25, prob = c(.8, .2)), #
+          sample(c("yes", "no"), replace = TRUE, size = 25, prob = c(.2, .8)))#
+                    )#
+)
+library(ggplot2)#
+ggplot(dat, aes(x = tooth, y = jaw, color = impact)) +#
+    geom_point() +#
+    geom_smooth(aes(group = 1), method = "lm") +#
+    theme_bw()
+model1 <- lm(jaw ~ tooth, data = dat)#
+summary(model1)#
+dat$res1 <- residuals(model1)
+model2 <- glm(impact ~ res1, #
+              family = binomial(link = "logit"), #
+              data = dat)#
+summary(model2)#
+#
+exp(cbind(coef(model2), confint(model2)))
+model3 <- glm(impact ~ jaw + tooth, #
+              family = binomial(link = "logit"), #
+              data = dat)
+summary(model3)
+model3 <- glm(impact ~ jaw, #
+              family = binomial(link = "logit"), #
+              data = dat)#
+summary(model3)
+model3 <- glm(impact ~ jaw + tooth, #
+              family = binomial(link = "logit"), #
+              data = dat)#
+summary(model3)#
+#
+exp(cbind(coef(model3), confint(model3)))
+model2 <- glm(impact ~ res1, #
+              family = binomial(link = "logit"), #
+              data = dat)#
+summary(model2)
+model2 <- glm(impact ~ abs(res1), #
+              family = binomial(link = "logit"), #
+              data = dat)#
+summary(model2)
+dat
+model2 <- glm(impact ~ res1, #
+              family = binomial(link = "logit"), #
+              data = dat)#
+summary(model2)
+exp(cbind(coef(model2), confint(model2)))
+model3 <- glm(impact ~ jaw + tooth, #
+              family = binomial(link = "logit"), #
+              data = dat)#
+summary(model3)#
+#
+exp(cbind(coef(model3), confint(model3)))
+76137.94-10150
+print(76137.94-10150, 6)
+print(76137.94-10150, 9)
+u=runif(100)
+y=as.integer(u < 0.3)
+y
+table(y)
+u=runif(100)
+y=as.integer(u < 0.3)
+table(y)
+4^0.5
+4^-0.5
+10^-0.5
+10^0.5
+16^0.5
+16^-0.5
+64*.25
+ls()
+lsos()
+paste0
+getAnywhere(paste0)
+paste
+library(devtools)
+library(roxygen3)
+sessionInfo()
+setwd("~/Dropbox/.myR/smisc")
+ls()
+document()
+remove.packages("roxygen3")
+?install_github
+install_github(roxygen2)
+install_github("roxygen2")
+devtools::install_github("klutometis/roxygen")
+remove.packages("devtools")
+remove.packages("roxygen3")
+remove.packages("roxygen2")
