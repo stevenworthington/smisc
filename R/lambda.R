@@ -26,9 +26,10 @@ lambda.MCMCglmm <- function(model, gen = FALSE) {
     if(class(model) != "MCMCglmm") stop("Not a model of class 'MCMCglmm'!")
     phyloCols <- grep("phylo", colnames(model$VCV))
     if(gen == TRUE) {
-        lambda <- mcmc(rowSums(model$VCV[, phyloCols]) / rowSums(model$VCV))
+        lambda <- mcmc(rowSums(model$VCV[, phyloCols, drop = FALSE]) / rowSums(model$VCV))
     } else {
-        lambda <- mcmc(rowSums(model$VCV[, phyloCols]) / rowSums(model$VCV[, grep("phylo|units", colnames(model$VCV))]))
+        lambda <- mcmc(rowSums(model$VCV[, phyloCols, drop = FALSE]) / 
+                       rowSums(model$VCV[, grep("phylo|units", colnames(model$VCV))]))
     }
     lambda
 }
