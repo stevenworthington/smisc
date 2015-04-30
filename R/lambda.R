@@ -25,12 +25,32 @@ lambda <- function(model) UseMethod("lambda")
 lambda.MCMCglmm <- function(model, gen = FALSE) {
     if(class(model) != "MCMCglmm") stop("Not a model of class 'MCMCglmm'!")
     phyloCols <- grep("phylo", colnames(model$VCV))
-    if(gen == TRUE) {
-        lambda <- mcmc(rowSums(model$VCV[, phyloCols, drop = FALSE]) / rowSums(model$VCV))
-    } else {
-        lambda <- mcmc(rowSums(model$VCV[, phyloCols, drop = FALSE]) / 
-                       rowSums(model$VCV[, grep("phylo|units", colnames(model$VCV))]))
-    }
+    
+    if(unique(model$family) == "gaussian") {
+        if(gen == TRUE) {
+            lambda <- mcmc(rowSums(model$VCV[, phyloCols, drop = FALSE]) / rowSums(model$VCV))
+        } else {
+            lambda <- mcmc(rowSums(model$VCV[, phyloCols, drop = FALSE]) /
+                           rowSums(model$VCV[, grep("phylo|units", colnames(model$VCV))]))
+        }
+    } else 
+    if(unique(model$family) == "multinomial") {    
+        if(gen == TRUE) {
+            lambda <- mcmc(rowSums(model$VCV[, phyloCols, drop = FALSE]) / (rowSums(model$VCV) + (pi^2)/3))
+        } else {
+            lambda <- mcmc(rowSums(model$VCV[, phyloCols, drop = FALSE]) /
+                          (rowSums(model$VCV[, grep("phylo|units", colnames(model$VCV))]) + (pi^2)/3))
+        }
+    } else 
+    if(unique(model$family) == "ordinal") {    
+        if(gen == TRUE) {
+            lambda <- mcmc(rowSums(model$VCV[, phyloCols, drop = FALSE]) / (rowSums(model$VCV) + 1))
+        } else {
+            lambda <- mcmc(rowSums(model$VCV[, phyloCols, drop = FALSE]) /
+                          (rowSums(model$VCV[, grep("phylo|units", colnames(model$VCV))]) + 1))
+        }
+    }        
     lambda
 }
+
 
